@@ -6,6 +6,7 @@
         "type": "Mnist_Experimental",
         "args": {}
     },
+    "initializer": "kaiming_uniform_",
     "data_loader": {
         "type": "MnistDataLoader",
         "args":{

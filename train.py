@@ -6,6 +6,7 @@ import data_loader.data_loaders as module_data
 import model.loss as module_loss
 import model.metric as module_metric
 import model.model as module_arch
+import model.initializer as initializer
 from parse_config import ConfigParser
 from trainer import Trainer
 from utils import prepare_device
@@ -27,9 +28,11 @@ def main(config):
 
     # build model architecture, then print to console
     model = config.init_obj('arch', module_arch)
-    logger.info(model)
 
     # initialize model values with different possible options
+    initial = getattr(torch.nn.init, config['initializer'])
+    model.apply(lambda module: initializer.init_weights(m=module, initial=initial))
+    logger.info(model)
 
 
     # prepare for (multi-device) GPU training
