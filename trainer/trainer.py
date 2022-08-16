@@ -9,12 +9,13 @@ class Trainer(BaseTrainer):
     """
     Trainer class
     """
-    def __init__(self, model, criterion, metric_ftns, optimizer, config, device,
+    def __init__(self, model, criterion, regularize,  metric_ftns, optimizer, config, device,
                  data_loader, valid_data_loader=None, lr_scheduler=None, len_epoch=None):
-        super().__init__(model, criterion, metric_ftns, optimizer, config)
+        super().__init__(model, criterion,  metric_ftns, optimizer, config)
         self.config = config
         self.device = device
         self.data_loader = data_loader
+        self.regularize = regularize
         if len_epoch is None:
             # epoch-based training
             self.len_epoch = len(self.data_loader)
@@ -44,6 +45,7 @@ class Trainer(BaseTrainer):
             self.optimizer.zero_grad()
             output = self.model(data)
             loss = self.criterion(output, target)
+            loss = self.regularize.reg(self.model, loss)
             loss.backward()
             self.optimizer.step()
 

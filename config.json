@@ -25,6 +25,14 @@
         }
     },
     "loss": "nll_loss",
+    "regularize": {
+        "type": "Regularize",
+        "args": {
+            "state": true,
+            "norm_type": "l1",
+            "lambda": 0.001
+        }
+    },
     "metrics": [
         "accuracy", "top_k_acc"
     ],
